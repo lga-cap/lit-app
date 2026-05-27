@@ -18,7 +18,7 @@ name: Deploy POC to GitHub Pages
 on:
   # Se dispara automáticamente al hacer push a main
   push:
-    branches: [main]
+    branches: [master]
 
   # También se puede lanzar manualmente desde la pestaña "Actions" de GitHub
   workflow_dispatch:

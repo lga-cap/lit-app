@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs -I{} git show -s --format=\"%H %s%n%b%n---\" {})",
+      "Bash(git ls-remote *)",
+      "Bash(git fetch *)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)"
+    ]
+  }
+}

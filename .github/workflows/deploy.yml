@@ -84,9 +84,10 @@ jobs:
         run: npm ci
 
       - name: 🔍 Lint (opcional)
-        # Descomenta la siguiente línea si tienes ESLint configurado:
-        # run: npm run lint
-        run: echo "ℹ️  Lint omitido. Descomenta 'run: npm run lint' para activarlo."
+        # Para activar ESLint, sustituye las dos líneas de abajo por:
+        #   run: npm run lint
+        run: |
+          echo "Lint omitido. Sustituye este step por 'run: npm run lint' para activarlo."
 
       - name: 🏗️  Build de producción
         run: |

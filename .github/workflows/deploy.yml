@@ -13,7 +13,7 @@
 #   push a main → (crea gh-pages si no existe) → build → subir artefacto → deploy a GitHub Pages
 # ─────────────────────────────────────────────────────────────────────────────
 
-name: 🚀 Deploy POC to GitHub Pages
+name: Deploy POC to GitHub Pages
 
 on:
   # Se dispara automáticamente al hacer push a main
@@ -25,9 +25,9 @@ on:
 
 # Permisos mínimos necesarios para publicar en GitHub Pages
 permissions:
-  contents: write  # write para poder crear la rama gh-pages si no existe
-  pages:    write  # escribir en GitHub Pages
-  id-token: write  # autenticación OIDC (requerida por deploy-pages)
+  contents: write # write para poder crear la rama gh-pages si no existe
+  pages: write # escribir en GitHub Pages
+  id-token: write # autenticación OIDC (requerida por deploy-pages)
 
 # Evita despliegues simultáneos: si hay uno en curso, cancela el anterior
 concurrency:
@@ -36,25 +36,23 @@ concurrency:
 
 # ─────────────────────────────────────────────────────────────────────────────
 jobs:
-
-  # ── JOB 1: BUILD ────────────────────────────────────────────────────────────
   build:
-    name: 🔨 Build Angular app
+    name: Build Angular app
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout código
+      - name: Checkout código
         uses: actions/checkout@v4
         with:
           # fetch-depth: 0 necesario para poder listar y crear ramas remotas
           fetch-depth: 0
 
-      - name: 🌿 Crear rama gh-pages si no existe
+      - name: Crear rama gh-pages si no existe
         run: |
           if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
-            echo "✅ La rama gh-pages ya existe. Continuando..."
+            echo "La rama gh-pages ya existe. Continuando..."
           else
-            echo "⚠️  La rama gh-pages no existe. Creándola como rama huérfana..."
+            echo "La rama gh-pages no existe. Creándola como rama huérfana..."
             git config user.name  "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -64,43 +62,42 @@ jobs:
             # Creamos una rama huérfana (sin historial), vacía
             git checkout --orphan gh-pages
             git rm -rf . || true
-            git commit --allow-empty -m "🌿 Inicializar rama gh-pages"
+            git commit --allow-empty -m "Inicializar rama gh-pages"
             git push origin gh-pages
 
             # Volvemos al commit original
             git checkout "$CURRENT_SHA"
-            echo "✅ Rama gh-pages creada y vuelto al commit original."
+            echo "Rama gh-pages creada y vuelto al commit original."
           fi
 
-      - name: ⚙️  Setup Node.js 20 (LTS)
+      - name: Setup Node.js 20 (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          # Cachea node_modules entre ejecuciones para acelerar el pipeline
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
-      - name: 📦 Instalar dependencias
+      - name: Instalar dependencias
         # `npm ci` usa el package-lock.json exacto (más reproducible que npm install)
         run: npm ci
 
-      - name: 🔍 Lint (opcional)
+      - name: Lint (opcional)
         # Para activar ESLint, sustituye las dos líneas de abajo por:
         #   run: npm run lint
         run: |
           echo "Lint omitido. Sustituye este step por 'run: npm run lint' para activarlo."
 
-      - name: 🏗️  Build de producción
+      - name: Build de producción
         run: |
           npm run build -- \
             --configuration production \
             --base-href /lit-app/
-        # ⚠️  IMPORTANTE: --base-href debe coincidir con el nombre de tu repo.
+        # IMPORTANTE: --base-href debe coincidir con el nombre de tu repo.
         #     Si tu repo se llama "luis-bbva-poc", ponlo aquí: /luis-bbva-poc/
         env:
           # Silencia los warnings de Node.js sobre versión impar
-          NODE_NO_WARNINGS: '1'
+          NODE_NO_WARNINGS: "1"
 
-      - name: 📤 Subir artefacto de Pages
+      - name: Subir artefacto de Pages
         uses: actions/upload-pages-artifact@v3
         with:
           # Angular 17+ genera el output en dist/<project>/browser
@@ -108,7 +105,7 @@ jobs:
 
   # ── JOB 2: DEPLOY ───────────────────────────────────────────────────────────
   deploy:
-    name: 🌐 Deploy a GitHub Pages
+    name: Deploy a GitHub Pages
     # Solo desplegamos si el build fue exitoso
     needs: build
     runs-on: ubuntu-latest
@@ -119,6 +116,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: 🚀 Deploy
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4

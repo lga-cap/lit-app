@@ -1,0 +1,65 @@
+/* Shell layout — design tokens */
+
+:host {
+  display: block;
+  min-height: 100vh;
+
+  /* Design tokens LGA — heredados por todos los web components via Shadow DOM */
+  --lga-primary:   #007AFF;
+  --lga-success:   #34C759;
+  --lga-warning:   #FF9F0A;
+  --lga-danger:    #FF3B30;
+  --lga-bg:        #F2F2F7;
+  --lga-card:      #FFFFFF;
+  --lga-label:     #1C1C1E;
+  --lga-label2:    #3C3C43;
+  --lga-label3:    #8E8E93;
+  --lga-separator: rgba(60, 60, 67, 0.12);
+  --lga-white:     #FFFFFF;
+}
+
+.dashboard {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+  min-height: 100vh;
+}
+
+/* Entrada suave al cambiar de tab */
+.tab-content {
+  padding-top: 4px;
+  animation: fadeUp 0.22s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast de notificación global */
+.notification {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(90px);
+  background: rgba(28, 28, 30, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
+  padding: 11px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.notification.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

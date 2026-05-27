@@ -1,0 +1,96 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# deploy.yml — CI/CD para despliegue a GitHub Pages
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# REQUISITOS PREVIOS (en el repo de GitHub):
+#   Settings → Pages → Source → "GitHub Actions"
+#
+# PERSONALIZACIÓN:
+#   Cambia 'bbva-poc' en la línea del build (--base-href) por el nombre
+#   exacto de tu repositorio en GitHub.
+#
+# FLUJO:
+#   push a main → build Angular → subir artefacto → deploy a GitHub Pages
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: 🚀 Deploy POC to GitHub Pages
+
+on:
+  # Se dispara automáticamente al hacer push a main
+  push:
+    branches: [main]
+
+  # También se puede lanzar manualmente desde la pestaña "Actions" de GitHub
+  workflow_dispatch:
+
+# Permisos mínimos necesarios para publicar en GitHub Pages
+permissions:
+  contents: read   # leer el código del repositorio
+  pages:    write  # escribir en GitHub Pages
+  id-token: write  # autenticación OIDC (requerida por deploy-pages)
+
+# Evita despliegues simultáneos: si hay uno en curso, cancela el anterior
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+
+  # ── JOB 1: BUILD ────────────────────────────────────────────────────────────
+  build:
+    name: 🔨 Build Angular app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: ⚙️  Setup Node.js 20 (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          # Cachea node_modules entre ejecuciones para acelerar el pipeline
+          cache: 'npm'
+
+      - name: 📦 Instalar dependencias
+        # `npm ci` usa el package-lock.json exacto (más reproducible que npm install)
+        run: npm ci
+
+      - name: 🔍 Lint (opcional pero recomendado en un proyecto real)
+        # Descomenta si tienes ESLint configurado:
+        # run: npm run lint
+
+      - name: 🏗️  Build de producción
+        run: |
+          npm run build -- \
+            --configuration production \
+            --base-href /bbva-poc/
+        # ⚠️  IMPORTANTE: --base-href debe coincidir con el nombre de tu repo.
+        #     Si tu repo se llama "luis-bbva-poc", ponlo aquí: /luis-bbva-poc/
+        env:
+          # Silencia los warnings de Node.js sobre versión impar
+          NODE_NO_WARNINGS: '1'
+
+      - name: 📤 Subir artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Angular 17+ genera el output en dist/<project>/browser
+          path: dist/app/browser
+
+  # ── JOB 2: DEPLOY ───────────────────────────────────────────────────────────
+  deploy:
+    name: 🌐 Deploy a GitHub Pages
+    # Solo desplegamos si el build fue exitoso
+    needs: build
+    runs-on: ubuntu-latest
+
+    # Entorno de GitHub (aparece en la pestaña "Environments" del repo)
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 🚀 Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

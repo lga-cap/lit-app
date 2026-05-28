@@ -1,10 +1,7 @@
-/* Shell layout — design tokens */
-
 :host {
   display: block;
   min-height: 100vh;
 
-  /* Design tokens LGA — heredados por todos los web components via Shadow DOM */
   --lga-primary:   #007AFF;
   --lga-success:   #34C759;
   --lga-warning:   #FF9F0A;
@@ -25,7 +22,6 @@
   min-height: 100vh;
 }
 
-/* Entrada suave al cambiar de tab */
 .tab-content {
   padding-top: 4px;
   animation: fadeUp 0.22s ease;
@@ -36,7 +32,6 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Toast de notificación global */
 .notification {
   position: fixed;
   bottom: 28px;

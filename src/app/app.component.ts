@@ -1,10 +1,3 @@
-/**
- * app.component.ts — Shell LGA
- *
- * Todos los web components se crean programáticamente (ngAfterViewInit).
- * El template Angular es solo el punto de anclaje.
- */
-
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -21,7 +14,6 @@ import { EventBusService } from './services/event-bus.service';
 import { Account, Movement, Product } from './models/account.model';
 import { Transfer, TransferType } from './models/transfer.model';
 
-// Registro de Custom Elements
 import './web-component/lga-header';
 import './web-component/lga-tabs';
 import './web-component/lga-card';
@@ -29,6 +21,7 @@ import './web-component/lga-account-card';
 import './web-component/lga-movement-item';
 import './web-component/lga-transfer-form';
 import './web-component/lga-transfer-list';
+import './web-component/lga-chatbot';
 
 const TABS = [
   { id: 'cuenta', label: 'Cuenta' },
@@ -47,8 +40,7 @@ const TABS = [
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('app') private appRef!: ElementRef<HTMLDivElement>;
-  @ViewChild('notification')
-  private notificationRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('notification') private notificationRef!: ElementRef<HTMLDivElement>;
 
   private account!: Account;
   private movements!: Movement[];
@@ -95,10 +87,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // CONSTRUCCIÓN PROGRAMÁTICA DE LA UI
-  // ─────────────────────────────────────────────────────────────────
-
   private buildUI(): void {
     const root = this.appRef.nativeElement;
     root.innerHTML = '';
@@ -123,19 +111,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     tabs.addEventListener('tab-change', (e: Event) => {
       const { tabId } = (e as CustomEvent<{ tabId: string }>).detail;
       (tabs as any).activeTab = tabId;
-      this.eventBus.emit({
-        type: 'lga.navigation.tab-changed',
-        payload: { tabId },
-      });
+      this.eventBus.emit({ type: 'lga.navigation.tab-changed', payload: { tabId } });
       this.renderTab(tabId);
     });
 
     this.renderTab(TABS[0].id);
   }
-
-  // ─────────────────────────────────────────────────────────────────
-  // RENDERIZADO DE TABS
-  // ─────────────────────────────────────────────────────────────────
 
   private renderTab(tabId: string): void {
     this.tabContentEl.innerHTML = '';
@@ -175,18 +156,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     (list as any).transfers = [...this.transfers];
 
     form.addEventListener('lga-transfer-submit', (e: Event) => {
-      const { amount, type } = (
-        e as CustomEvent<{ amount: number; type: TransferType }>
-      ).detail;
+      const { amount, type } = (e as CustomEvent<{ amount: number; type: TransferType }>).detail;
 
       const transfer: Transfer = {
         id: Math.random().toString(36).slice(2, 9),
         amount,
         type,
-        date: new Date().toLocaleString('es-ES', {
-          dateStyle: 'short',
-          timeStyle: 'short',
-        }),
+        date: new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }),
       };
 
       this.transfers = [...this.transfers, transfer];
@@ -223,8 +199,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // ─────────────────────────────────────────────────────────────────
-
   private showNotification(msg: string): void {
     const el = this.notificationRef.nativeElement;
     el.textContent = msg;
@@ -234,10 +208,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   private _fmt(n: number): string {
-    return new Intl.NumberFormat('es-ES', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(n);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(n);
   }
 
   ngOnDestroy(): void {

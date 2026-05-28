@@ -1,13 +1,6 @@
-/**
- * lga-movement-item.js
- * Fila de movimiento bancario.
- *
- * INPUT: description / amount / date
- */
 import { LitElement, html, css } from 'lit-element';
 
 class LgaMovementItem extends LitElement {
-
   static get properties() {
     return {
       description: { type: String },

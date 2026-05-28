@@ -1,13 +1,6 @@
-/**
- * lga-transfer-list.js
- * Historial de transferencias — verde (inmediata) / naranja (normal).
- *
- * INPUT: transfers — Array<{ id, amount, type, date }>
- */
 import { LitElement, html, css } from 'lit-element';
 
 class LgaTransferList extends LitElement {
-
   static get properties() {
     return {
       transfers: { type: Array },
@@ -44,7 +37,6 @@ class LgaTransferList extends LitElement {
         border-bottom: 0.5px solid rgba(60, 60, 67, 0.12);
       }
 
-      /* Estado vacío */
       .empty {
         padding: 28px 16px;
         text-align: center;
@@ -58,10 +50,8 @@ class LgaTransferList extends LitElement {
         opacity: 0.4;
       }
 
-      /* Lista */
       ul { margin: 0; padding: 0; }
 
-      /* Cada fila */
       .item {
         list-style: none;
         padding: 12px 16px;
@@ -73,11 +63,9 @@ class LgaTransferList extends LitElement {
       }
       .item:last-child { border-bottom: none; }
 
-      /* Colores del borde lateral según tipo */
       .item.inmediata { border-left-color: #34C759; }
       .item.normal    { border-left-color: #FF9F0A; }
 
-      /* Fila principal */
       .item-main {
         display: flex;
         justify-content: space-between;
@@ -101,7 +89,6 @@ class LgaTransferList extends LitElement {
         padding-left: 10px;
       }
 
-      /* Badge de tipo */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -127,7 +114,6 @@ class LgaTransferList extends LitElement {
         border: 0.5px solid #FF9F0A40;
       }
 
-      /* Aviso para transferencias normales */
       .pending-notice {
         display: flex;
         align-items: flex-start;
@@ -165,7 +151,6 @@ class LgaTransferList extends LitElement {
           <ul>
             ${list.map(t => html`
               <li class="item ${t.type}">
-
                 <div class="item-main">
                   <span class="amount">${this._formatAmount(t.amount)}</span>
                   <span class="date">${t.date}</span>
@@ -180,13 +165,9 @@ class LgaTransferList extends LitElement {
                 ${t.type === 'normal' ? html`
                   <div class="pending-notice">
                     <span class="notice-icon">⚠️</span>
-                    <span>
-                      Transferencia en proceso. Cambiará de estado cuando se complete
-                      la operación (habitualmente en 24–48 h laborables).
-                    </span>
+                    <span>Transferencia en proceso. Cambiará de estado cuando se complete la operación (habitualmente en 24–48 h laborables).</span>
                   </div>
                 ` : ''}
-
               </li>
             `)}
           </ul>

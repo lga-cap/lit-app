@@ -1,9 +1,3 @@
-/**
- * lga-header.js
- * Cabecera principal (translúcida + blur).
- *
- * INPUT: username — String
- */
 import { LitElement, html, css } from "lit-element";
 
 class LgaHeader extends LitElement {
@@ -17,8 +11,7 @@ class LgaHeader extends LitElement {
     return css`
       :host {
         display: block;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
         position: sticky;
         top: 0;
         z-index: 100;
@@ -28,9 +21,7 @@ class LgaHeader extends LitElement {
         background: rgba(242, 242, 247, 0.85);
         backdrop-filter: saturate(180%) blur(20px);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
-
         border-bottom: 0.5px solid rgba(60, 60, 67, 0.2);
-
         padding: 13px 20px 12px;
         display: flex;
         justify-content: space-between;
@@ -42,8 +33,7 @@ class LgaHeader extends LitElement {
         font-weight: 700;
         color: #007aff;
         letter-spacing: 2px;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
       }
 
       .greeting {
@@ -59,7 +49,7 @@ class LgaHeader extends LitElement {
     return html`
       <header>
         <span class="logo">LGA</span>
-        <span class="greeting">Hola, ${this.username} </span>
+        <span class="greeting">Hola, ${this.username}</span>
       </header>
     `;
   }

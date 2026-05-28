@@ -1,17 +1,6 @@
-/**
- * lga-transfer-form.js
- * Formulario de nueva transferencia.
- *
- * INPUT:  iban / balance
- * OUTPUT: lga-transfer-submit → { amount, type: 'inmediata'|'normal' }
- *
- * Estado interno (attribute: false):
- *   _amount / _immediate / _error
- */
 import { LitElement, html, css } from 'lit-element';
 
 class LgaTransferForm extends LitElement {
-
   static get properties() {
     return {
       iban:       { type: String },
@@ -44,11 +33,11 @@ class LgaTransferForm extends LitElement {
         overflow: hidden;
       }
 
-      /* ——— Sección cuenta origen ——— */
       .origin-section {
         padding: 14px 16px;
         border-bottom: 0.5px solid rgba(60, 60, 67, 0.12);
       }
+
       .section-label {
         font-size: 0.68rem;
         font-weight: 600;
@@ -57,6 +46,7 @@ class LgaTransferForm extends LitElement {
         color: #8E8E93;
         margin-bottom: 4px;
       }
+
       .iban-text {
         font-family: 'SF Mono', 'Fira Code', monospace;
         font-size: 0.82rem;
@@ -64,7 +54,6 @@ class LgaTransferForm extends LitElement {
         letter-spacing: 1px;
       }
 
-      /* ——— Campo importe ——— */
       .amount-section {
         padding: 16px 16px 14px;
         border-bottom: 0.5px solid rgba(60, 60, 67, 0.12);
@@ -83,7 +72,6 @@ class LgaTransferForm extends LitElement {
         line-height: 1;
       }
 
-      /* Input de importe — sin marco, número grande */
       .amount-input {
         all: unset;
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
@@ -111,10 +99,7 @@ class LgaTransferForm extends LitElement {
         margin-top: 5px;
       }
 
-      /* ——— Checkbox inmediata / normal ——— */
-      .type-section {
-        padding: 0;
-      }
+      .type-section { padding: 0; }
 
       .type-option {
         display: flex;
@@ -130,7 +115,6 @@ class LgaTransferForm extends LitElement {
       .type-option:last-child { border-bottom: none; }
       .type-option:active     { background: #F2F2F7; }
 
-      /* Checkbox nativo */
       .type-option input[type="checkbox"] {
         width: 20px;
         height: 20px;
@@ -158,7 +142,6 @@ class LgaTransferForm extends LitElement {
         color: #8E8E93;
       }
 
-      /* Indicador "activo" en la opción seleccionada */
       .option-check {
         color: #007AFF;
         font-size: 1rem;
@@ -168,7 +151,6 @@ class LgaTransferForm extends LitElement {
       }
       .type-option.selected .option-check { opacity: 1; }
 
-      /* ——— Botón enviar ——— */
       .submit-btn {
         display: block;
         width: calc(100% - 32px);
@@ -236,13 +218,11 @@ class LgaTransferForm extends LitElement {
       <form @submit="${this._onSubmit}">
         <div class="form">
 
-          <!-- Cuenta origen -->
           <div class="origin-section">
             <p class="section-label">Desde</p>
             <p class="iban-text">${this._formatIban(this.iban)}</p>
           </div>
 
-          <!-- Importe -->
           <div class="amount-section">
             <p class="section-label">Importe</p>
             <div class="amount-row">
@@ -263,7 +243,6 @@ class LgaTransferForm extends LitElement {
             }
           </div>
 
-          <!-- Tipo de transferencia -->
           <div class="type-section">
             <label class="type-option ${this._immediate ? 'selected' : ''}">
               <input
@@ -278,7 +257,6 @@ class LgaTransferForm extends LitElement {
               <span class="option-check">✓</span>
             </label>
 
-            <!-- Descripción de la alternativa (normal) -->
             <div class="type-option ${!this._immediate ? 'selected' : ''}" style="cursor:default">
               <div style="width:20px;height:20px;flex-shrink:0"></div>
               <div class="option-texts">
@@ -293,9 +271,7 @@ class LgaTransferForm extends LitElement {
 
         </div>
 
-        <button type="submit" class="submit-btn">
-          Enviar transferencia
-        </button>
+        <button type="submit" class="submit-btn">Enviar transferencia</button>
       </form>
     `;
   }

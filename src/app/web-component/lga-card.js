@@ -1,14 +1,6 @@
-/**
- * lga-card.js
- * Tarjeta contenedora genérica.
- *
- * INPUT:  title / subtitle / badge / clickable
- * OUTPUT: card-click → CustomEvent { title }
- */
 import { LitElement, html, css } from 'lit-element';
 
 class LgaCard extends LitElement {
-
   static get properties() {
     return {
       title:     { type: String },
@@ -35,7 +27,6 @@ class LgaCard extends LitElement {
         border-radius: 12px;
         padding: 16px;
         margin: 0 16px 12px;
-        /* Sombra sutil */
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
         transition: transform 0.15s ease, box-shadow 0.15s ease;
       }
@@ -80,7 +71,6 @@ class LgaCard extends LitElement {
         margin-left: 8px;
       }
 
-      /* Flecha de navegación para items clickables */
       :host([clickable]) .card-header::after {
         content: '›';
         font-size: 1.2rem;
@@ -91,10 +81,7 @@ class LgaCard extends LitElement {
         flex-shrink: 0;
       }
 
-      /* Separador entre header y slot content */
-      ::slotted(*:first-child) {
-        margin-top: 12px;
-      }
+      ::slotted(*:first-child) { margin-top: 12px; }
     `;
   }
 

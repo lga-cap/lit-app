@@ -1,17 +1,9 @@
-/**
- * lga-tabs.js
- * Navegación por pestañas (segmented control).
- *
- * INPUT:  tabs      — Array<{ id, label }>
- *         activeTab — String
- * OUTPUT: tab-change — CustomEvent  detail: { tabId }
- */
 import { LitElement, html, css } from "lit-element";
 
 class LgaTabs extends LitElement {
   static get properties() {
     return {
-      tabs: { type: Array },
+      tabs:      { type: Array },
       activeTab: { type: String, attribute: "active-tab" },
     };
   }
@@ -26,11 +18,9 @@ class LgaTabs extends LitElement {
     return css`
       :host {
         display: block;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
       }
 
-      /* Zona exterior del segmented control */
       .sc-wrapper {
         padding: 10px 16px 14px;
         background: #f2f2f7;
@@ -45,8 +35,7 @@ class LgaTabs extends LitElement {
 
       .tab {
         all: initial;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
         flex: 1;
         text-align: center;
         padding: 7px 6px;
@@ -57,11 +46,7 @@ class LgaTabs extends LitElement {
         cursor: pointer;
         line-height: 1.2;
         letter-spacing: -0.1px;
-        transition:
-          background 0.2s ease,
-          color 0.2s ease,
-          box-shadow 0.2s ease,
-          font-weight 0s;
+        transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -69,26 +54,15 @@ class LgaTabs extends LitElement {
         -webkit-user-select: none;
       }
 
-      /* Hover: ligero realce sin marcar el tab */
-      .tab:hover {
-        color: rgba(60, 60, 67, 0.85);
-      }
+      .tab:hover { color: rgba(60, 60, 67, 0.85); }
 
-      /*
-       * TAB ACTIVO — el "thumb" del segmented control
-       * Fondo blanco + sombra sutil → efecto de tarjeta elevada sobre el track
-       */
       .tab.active {
         background: #ffffff;
         color: #1c1c1e;
         font-weight: 600;
-        /* Sombra multicapa: sensación de elevación real */
-        box-shadow:
-          0 1px 3px rgba(0, 0, 0, 0.12),
-          0 1px 2px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
       }
 
-      /* Focus ring accesible (teclado / screen readers) */
       .tab:focus-visible {
         outline: 2px solid #007aff;
         outline-offset: -2px;
@@ -97,7 +71,7 @@ class LgaTabs extends LitElement {
   }
 
   _select(tabId) {
-    if (this.activeTab === tabId) return; // no re-emitir si ya está activo
+    if (this.activeTab === tabId) return;
     this.activeTab = tabId;
     this.dispatchEvent(
       new CustomEvent("tab-change", {

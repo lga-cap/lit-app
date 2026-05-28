@@ -1,13 +1,6 @@
-/**
- * lga-account-card.js
- * Tarjeta de cuenta bancaria.
- *
- * INPUT: iban / balance / accountType (account-type)
- */
 import { LitElement, html, css } from 'lit-element';
 
 class LgaAccountCard extends LitElement {
-
   static get properties() {
     return {
       iban:        { type: String },
@@ -29,15 +22,11 @@ class LgaAccountCard extends LitElement {
         padding: 24px 22px 22px;
         margin: 14px 16px;
         color: #fff;
-        /* Sombra en capas: distancia + difusa */
-        box-shadow:
-          0 2px 8px  rgba(0, 0, 0, 0.18),
-          0 8px 24px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 8px 24px rgba(0, 0, 0, 0.12);
         position: relative;
         overflow: hidden;
       }
 
-      /* Círculos decorativos de fondo */
       .card::before,
       .card::after {
         content: '';
@@ -46,14 +35,8 @@ class LgaAccountCard extends LitElement {
         opacity: 0.06;
         background: #fff;
       }
-      .card::before {
-        width: 200px; height: 200px;
-        top: -60px; right: -40px;
-      }
-      .card::after {
-        width: 140px; height: 140px;
-        bottom: -50px; left: -30px;
-      }
+      .card::before { width: 200px; height: 200px; top: -60px; right: -40px; }
+      .card::after  { width: 140px; height: 140px; bottom: -50px; left: -30px; }
 
       .account-type {
         font-size: 0.7rem;
@@ -92,9 +75,7 @@ class LgaAccountCard extends LitElement {
 
   _formatIban(iban) {
     if (!iban) return '';
-    // Enmascara el IBAN mostrando solo inicio y final
-    const masked = iban.slice(0, 4) + ' •••• •••• ' + iban.slice(-4);
-    return masked;
+    return iban.slice(0, 4) + ' •••• •••• ' + iban.slice(-4);
   }
 
   _formatBalance(balance) {
